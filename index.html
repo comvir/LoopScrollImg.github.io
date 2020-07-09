@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>循环滚动图片，loop scroll image</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script>
+        var img = new Image();
+        img.src = "img.jpg";
+        img.onload = function() {
+            drawImage();
+            setInterval(function() {
+                frame++;
+                if (frame > 192) {
+                    frame = 0;
+                }
+            }, 50);
+        }
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        //横向帧计数，horizontal frame count
+        var frame = 0;
+        var animeid = 0;
+        //图像缩放比例，image scale rate
+        var rate_w = 600 / 1080;
+
+        function drawImage() {
+            context.clearRect(0, 0, context.canvas.clientWidth, context.canvas.clientHeight);
+            context.drawImage(img, frame * 10, 0, 120, 1080, 400, 0, 120 * rate_w, 600);
+            if (frame >= 180) {
+                var cw = (192 - frame) * 10;
+                context.drawImage(img, 0, 0, 120 - cw, 1080, 400 + cw * rate_w, 0, (120 - cw) * rate_w, 600);
+            }
+            animeid = requestAnimationFrame(drawImage);
+        }
+    </script>
+</body>
+
+</html>
